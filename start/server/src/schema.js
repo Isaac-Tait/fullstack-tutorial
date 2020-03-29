@@ -8,11 +8,13 @@ const typeDefs = gql`
       rocket: Rocket
       isBooked: Boolean!
   }
+
   type Rocket {
       id: ID!
       name: String
       type: String
   }
+
   type User {
       id: ID!
       email: String!
@@ -21,12 +23,14 @@ const typeDefs = gql`
   
   type Mission {
       name: String
-      missionPatch(size: PatchSize): String
+      missionPatch(mission: String, size: PatchSize): String
   }
+
   enum PatchSize {
       SMALL
       LARGE
   }
+
   type Query {
   launches( # replace the current launches query with this one.
     """
