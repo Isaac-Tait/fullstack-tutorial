@@ -28,55 +28,7 @@ module.exports = {
       dataSources.launchAPI.getLaunchById({ launchId: id }),
      me: async (_, __, { dataSources }) =>
       dataSources.userAPI.findOrCreateUser(),
-  }
-};
-
-module.exports = {
-  Mission: {
-    // make sure the default size is 'large' in case user doesn't specify
-    missionPatch: (mission, { size } = { size: 'LARGE' }) => {
-      return size === 'SMALL'
-        ? mission.missionPatchSmall
-        : mission.missionPatchLarge;
-    },
   },
-}
-
-module.exports = {
-  Launch: {
-    isBooked: async (launch, _, { dataSources }) =>
-      dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
-  },
-}
-
-module.exports = {
-  User: {
-    trips: async (_, __, { dataSources }) => {
-      // get ids of launches by user
-      const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
-  
-      if (!launchIds.length) return [];
-  
-      // look up those launches by their ids
-      return (
-        dataSources.launchAPI.getLaunchesByIds({
-          launchIds,
-        }) || []
-      );
-    },
-  },
-}
-
-module.exports = {
-  Mutation: {
-    login: async (_, { email }, { dataSources }) => {
-      const user = await dataSources.userAPI.findOrCreateUser({ email });
-      if (user) return Buffer.from(email).toString('base64');
-    }
-  },
-}
-
-module.exports = {
   Mutation: {
     bookTrips: async (_, { launchIds }, { dataSources }) => {
       const results = await dataSources.userAPI.bookTrips({ launchIds });
@@ -111,5 +63,36 @@ module.exports = {
         launches: [launch],
       };
     },
+    login: async (_, { email }, { dataSources }) => {
+      const user = await dataSources.userAPI.findOrCreateUser({ email });
+      if (user) return Buffer.from(email).toString('base64');
+    }
   },
-}
+  Mission: {
+    // make sure the default size is 'large' in case user doesn't specify
+    missionPatch: (mission, { size } = { size: 'LARGE' }) => {
+      return size === 'SMALL'
+        ? mission.missionPatchSmall
+        : mission.missionPatchLarge;
+    },
+  },
+  Launch: {
+    isBooked: async (launch, _, { dataSources }) =>
+      dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
+  },
+  User: {
+    trips: async (_, __, { dataSources }) => {
+      // get ids of launches by user
+      const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
+  
+      if (!launchIds.length) return [];
+  
+      // look up those launches by their ids
+      return (
+        dataSources.launchAPI.getLaunchesByIds({
+          launchIds,
+        }) || []
+      );
+    },
+  },
+};
