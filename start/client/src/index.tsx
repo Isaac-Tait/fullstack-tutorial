@@ -1,15 +1,13 @@
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-
-import gql from "graphql-tag";
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'http://localhost:4000/'
+  uri: "http://localhost:3000/"
 });
 
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+const client = new ApolloClient({
   cache,
   link
 });
