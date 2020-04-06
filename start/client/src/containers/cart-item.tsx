@@ -24,6 +24,7 @@ const CartItem: React.FC<CartItemProps> = ({ launchId }) => {
   );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR: {error.message}</p>;
+  if (!data) return <p>Not found</p>;
   return data && <LaunchTile launch={data.launch} />;
 }
 
